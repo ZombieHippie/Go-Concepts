@@ -116,37 +116,42 @@ Driver.prototype.iter = function() {
   if (typeof(this.iter_fn) === "function") this.iter_fn()
   else console.log("Iter not set up yet")
 }
-Driver.prototype.addEntity = function(x, y, z) {
+Driver.prototype.addEntity =
+function(position_x, position_y, position_z,
+          rotation_x, rotation_y, rotation_z,
+          scale_x, scale_y, scale_z,
+          given_color) {
   var geom = new THREE.BoxGeometry( 1, 1, 1 );
   var color = new THREE.Color();
 
   var matrix = new THREE.Matrix4();
   var quaternion = new THREE.Quaternion();
 
+  // range -500, 500
   var sideLength = 1000
 
   var position = new THREE.Vector3();
-  position.x = x * sideLength - sideLength * .5;
-  position.y = y * sideLength - sideLength * .5;
-  position.z = z * sideLength - sideLength * .5;
+  position.x = position_x * sideLength - sideLength * .5;
+  position.y = position_y * sideLength - sideLength * .5;
+  position.z = position_z * sideLength - sideLength * .5;
 
   /* default until further development */
   var ZERO = 0
   var rotation = new THREE.Euler();
-  rotation.x = ZERO * 2 * Math.PI;
-  rotation.y = ZERO * 2 * Math.PI;
-  rotation.z = ZERO * 2 * Math.PI;
+  rotation.x = rotation_x * 2 * Math.PI;
+  rotation.y = rotation_y * 2 * Math.PI;
+  rotation.z = rotation_z * 2 * Math.PI;
 
   var scale = new THREE.Vector3();
-  scale.x = ZERO * 200 + 100;
-  scale.y = ZERO * 200 + 100;
-  scale.z = ZERO * 200 + 100;
+  scale.x = scale_x * 200 + 100;
+  scale.y = scale_y * 200 + 100;
+  scale.z = scale_z * 200 + 100;
 
   quaternion.setFromEuler( rotation, false );
   matrix.compose( position, quaternion, scale );
   // give the geom's vertices a random color, to be displayed
 
-  applyVertexColors( geom, color.setHex( Math.random() * 0xffffff ) );
+  applyVertexColors( geom, color.setHex( given_color * 0xffffff ) );
 
   this.geometry.merge( geom, matrix );
 }
