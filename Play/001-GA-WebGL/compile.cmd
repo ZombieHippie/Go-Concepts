@@ -1,0 +1,1 @@
+gopherjs build -o "genetic.go.js"
