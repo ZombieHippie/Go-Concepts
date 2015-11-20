@@ -5,6 +5,10 @@ import (
 	"math/rand"
 )
 
+func Debug(args ...interface{}) {
+	js.Global.Get("console").Call("log", args...)
+}
+
 func main() {
 	rand.Seed(42)
 	document := js.Global.Get("document")
@@ -22,14 +26,19 @@ func main() {
 	}
 
 	iteration := 0
-	hwgoal := "Hello, world!"
-	helloWorldGA := &HelloWorldGA{[]string{
-		"Gekmo+ xosmd!",
-		"Gekln, worle\"",
-		"Fello, wosld!",
-		"Gello, wprld!",
-		"Hello, world!",
-	}, hwgoal}
+	hwgoal := HWChromosome("Hello, world!")
+
+	populationSize := 64
+	testChromosomes := make([]HWChromosome, 0, populationSize)
+	for i := 0; i < populationSize; i++ {
+		str := make([]byte, len(hwgoal))
+		for j := 0; j < len(hwgoal); j++ {
+			str[j] = byte(32 + rand.Intn(64)) // general range of bytes
+		}
+		testChromosomes = append(testChromosomes, HWChromosome(str))
+	}
+	helloWorldGA := MakeHelloWorldGA(testChromosomes, hwgoal)
+
 	driver.Call("connect", func() {
 		iteration += 1
 		addEntity1(.5, .5, rand.Float32(), rand.Float32())
@@ -40,8 +49,8 @@ func main() {
 		console.Call("log", "Iteration:", iteration)
 		helloWorldGA.Evolve()
 		population := helloWorldGA.GetPopulation()
-		for _, chromosome := range population {
-			console.Call("log", "Chromosome:", chromosome, HWFitness(hwgoal, chromosome))
+		for _, citizen := range population {
+			console.Call("log", "Chromosome:", citizen.value, citizen.fitness)
 		}
 	})
 }

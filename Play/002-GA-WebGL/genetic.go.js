@@ -2287,30 +2287,6 @@ $packages["runtime"] = (function() {
 	$pkg.$init = $init;
 	return $pkg;
 })();
-$packages["errors"] = (function() {
-	var $pkg = {}, $init;
-	$init = function() {
-		$pkg.$init = function() {};
-		/* */ var $f, $c = false, $s = 0, $r; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
-		/* */ } return; } if ($f === undefined) { $f = { $blk: $init }; } $f.$s = $s; $f.$r = $r; return $f;
-	};
-	$pkg.$init = $init;
-	return $pkg;
-})();
-$packages["github.com/gopherjs/webgl"] = (function() {
-	var $pkg = {}, $init, errors, js;
-	errors = $packages["errors"];
-	js = $packages["github.com/gopherjs/gopherjs/js"];
-	$init = function() {
-		$pkg.$init = function() {};
-		/* */ var $f, $c = false, $s = 0, $r; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
-		$r = errors.$init(); /* */ $s = 1; case 1: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
-		$r = js.$init(); /* */ $s = 2; case 2: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
-		/* */ } return; } if ($f === undefined) { $f = { $blk: $init }; } $f.$s = $s; $f.$r = $r; return $f;
-	};
-	$pkg.$init = $init;
-	return $pkg;
-})();
 $packages["github.com/gopherjs/gopherjs/nosync"] = (function() {
 	var $pkg = {}, $init, Mutex, ptrType;
 	Mutex = $pkg.Mutex = $newType(0, $kindStruct, "nosync.Mutex", "Mutex", "github.com/gopherjs/gopherjs/nosync", function(locked_) {
@@ -2407,7 +2383,7 @@ $packages["math"] = (function() {
 	return $pkg;
 })();
 $packages["math/rand"] = (function() {
-	var $pkg = {}, $init, nosync, math, Source, Rand, lockedSource, rngSource, arrayType, sliceType, ptrType, ptrType$2, ptrType$3, ke, we, fe, kn, wn, fn, globalRand, rng_cooked, absInt32, NewSource, New, Seed, Float32, seedrand;
+	var $pkg = {}, $init, nosync, math, Source, Rand, lockedSource, rngSource, arrayType, sliceType, ptrType, ptrType$2, ptrType$3, ke, we, fe, kn, wn, fn, globalRand, rng_cooked, absInt32, NewSource, New, Seed, Intn, Float32, seedrand;
 	nosync = $packages["github.com/gopherjs/gopherjs/nosync"];
 	math = $packages["math"];
 	Source = $pkg.Source = $newType(8, $kindInterface, "rand.Source", "Source", "math/rand", null);
@@ -2699,6 +2675,14 @@ $packages["math/rand"] = (function() {
 		/* */ $s = -1; case -1: } return; } if ($f === undefined) { $f = { $blk: Seed }; } $f.$ptr = $ptr; $f.seed = seed; $f.$s = $s; $f.$r = $r; return $f;
 	};
 	$pkg.Seed = Seed;
+	Intn = function(n) {
+		var $ptr, _r, n, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _r = $f._r; n = $f.n; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		_r = globalRand.Intn(n); /* */ $s = 1; case 1: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
+		return _r;
+		/* */ } return; } if ($f === undefined) { $f = { $blk: Intn }; } $f.$ptr = $ptr; $f._r = _r; $f.n = n; $f.$s = $s; $f.$r = $r; return $f;
+	};
+	$pkg.Intn = Intn;
 	Float32 = function() {
 		var $ptr, _r, $s, $r;
 		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _r = $f._r; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
@@ -2812,70 +2796,557 @@ $packages["math/rand"] = (function() {
 	$pkg.$init = $init;
 	return $pkg;
 })();
+$packages["sort"] = (function() {
+	var $pkg = {}, $init, min, insertionSort, siftDown, heapSort, medianOfThree, swapRange, doPivot, quickSort, Sort;
+	min = function(a, b) {
+		var $ptr, a, b;
+		if (a < b) {
+			return a;
+		}
+		return b;
+	};
+	insertionSort = function(data, a, b) {
+		var $ptr, _r, _v, a, b, data, i, j, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _r = $f._r; _v = $f._v; a = $f.a; b = $f.b; data = $f.data; i = $f.i; j = $f.j; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		i = a + 1 >> 0;
+		/* while (true) { */ case 1:
+			/* if (!(i < b)) { break; } */ if(!(i < b)) { $s = 2; continue; }
+			j = i;
+			/* while (true) { */ case 3:
+				if (!(j > a)) { _v = false; $s = 5; continue s; }
+				_r = data.Less(j, j - 1 >> 0); /* */ $s = 6; case 6: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
+				_v = _r; case 5:
+				/* if (!(_v)) { break; } */ if(!(_v)) { $s = 4; continue; }
+				$r = data.Swap(j, j - 1 >> 0); /* */ $s = 7; case 7: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+				j = j - (1) >> 0;
+			/* } */ $s = 3; continue; case 4:
+			i = i + (1) >> 0;
+		/* } */ $s = 1; continue; case 2:
+		/* */ $s = -1; case -1: } return; } if ($f === undefined) { $f = { $blk: insertionSort }; } $f.$ptr = $ptr; $f._r = _r; $f._v = _v; $f.a = a; $f.b = b; $f.data = data; $f.i = i; $f.j = j; $f.$s = $s; $f.$r = $r; return $f;
+	};
+	siftDown = function(data, lo, hi, first) {
+		var $ptr, _r, _r$1, _v, child, data, first, hi, lo, root, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _r = $f._r; _r$1 = $f._r$1; _v = $f._v; child = $f.child; data = $f.data; first = $f.first; hi = $f.hi; lo = $f.lo; root = $f.root; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		root = lo;
+		/* while (true) { */ case 1:
+			child = ($imul(2, root)) + 1 >> 0;
+			if (child >= hi) {
+				/* break; */ $s = 2; continue;
+			}
+			if (!((child + 1 >> 0) < hi)) { _v = false; $s = 5; continue s; }
+			_r = data.Less(first + child >> 0, (first + child >> 0) + 1 >> 0); /* */ $s = 6; case 6: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
+			_v = _r; case 5:
+			/* */ if (_v) { $s = 3; continue; }
+			/* */ $s = 4; continue;
+			/* if (_v) { */ case 3:
+				child = child + (1) >> 0;
+			/* } */ case 4:
+			_r$1 = data.Less(first + root >> 0, first + child >> 0); /* */ $s = 9; case 9: if($c) { $c = false; _r$1 = _r$1.$blk(); } if (_r$1 && _r$1.$blk !== undefined) { break s; }
+			/* */ if (!_r$1) { $s = 7; continue; }
+			/* */ $s = 8; continue;
+			/* if (!_r$1) { */ case 7:
+				return;
+			/* } */ case 8:
+			$r = data.Swap(first + root >> 0, first + child >> 0); /* */ $s = 10; case 10: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+			root = child;
+		/* } */ $s = 1; continue; case 2:
+		/* */ $s = -1; case -1: } return; } if ($f === undefined) { $f = { $blk: siftDown }; } $f.$ptr = $ptr; $f._r = _r; $f._r$1 = _r$1; $f._v = _v; $f.child = child; $f.data = data; $f.first = first; $f.hi = hi; $f.lo = lo; $f.root = root; $f.$s = $s; $f.$r = $r; return $f;
+	};
+	heapSort = function(data, a, b) {
+		var $ptr, _q, a, b, data, first, hi, i, i$1, lo, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _q = $f._q; a = $f.a; b = $f.b; data = $f.data; first = $f.first; hi = $f.hi; i = $f.i; i$1 = $f.i$1; lo = $f.lo; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		first = a;
+		lo = 0;
+		hi = b - a >> 0;
+		i = (_q = ((hi - 1 >> 0)) / 2, (_q === _q && _q !== 1/0 && _q !== -1/0) ? _q >> 0 : $throwRuntimeError("integer divide by zero"));
+		/* while (true) { */ case 1:
+			/* if (!(i >= 0)) { break; } */ if(!(i >= 0)) { $s = 2; continue; }
+			$r = siftDown(data, i, hi, first); /* */ $s = 3; case 3: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+			i = i - (1) >> 0;
+		/* } */ $s = 1; continue; case 2:
+		i$1 = hi - 1 >> 0;
+		/* while (true) { */ case 4:
+			/* if (!(i$1 >= 0)) { break; } */ if(!(i$1 >= 0)) { $s = 5; continue; }
+			$r = data.Swap(first, first + i$1 >> 0); /* */ $s = 6; case 6: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+			$r = siftDown(data, lo, i$1, first); /* */ $s = 7; case 7: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+			i$1 = i$1 - (1) >> 0;
+		/* } */ $s = 4; continue; case 5:
+		/* */ $s = -1; case -1: } return; } if ($f === undefined) { $f = { $blk: heapSort }; } $f.$ptr = $ptr; $f._q = _q; $f.a = a; $f.b = b; $f.data = data; $f.first = first; $f.hi = hi; $f.i = i; $f.i$1 = i$1; $f.lo = lo; $f.$s = $s; $f.$r = $r; return $f;
+	};
+	medianOfThree = function(data, m1, m0, m2) {
+		var $ptr, _r, _r$1, _r$2, data, m0, m1, m2, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _r = $f._r; _r$1 = $f._r$1; _r$2 = $f._r$2; data = $f.data; m0 = $f.m0; m1 = $f.m1; m2 = $f.m2; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		_r = data.Less(m1, m0); /* */ $s = 3; case 3: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
+		/* */ if (_r) { $s = 1; continue; }
+		/* */ $s = 2; continue;
+		/* if (_r) { */ case 1:
+			$r = data.Swap(m1, m0); /* */ $s = 4; case 4: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		/* } */ case 2:
+		_r$1 = data.Less(m2, m1); /* */ $s = 7; case 7: if($c) { $c = false; _r$1 = _r$1.$blk(); } if (_r$1 && _r$1.$blk !== undefined) { break s; }
+		/* */ if (_r$1) { $s = 5; continue; }
+		/* */ $s = 6; continue;
+		/* if (_r$1) { */ case 5:
+			$r = data.Swap(m2, m1); /* */ $s = 8; case 8: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+			_r$2 = data.Less(m1, m0); /* */ $s = 11; case 11: if($c) { $c = false; _r$2 = _r$2.$blk(); } if (_r$2 && _r$2.$blk !== undefined) { break s; }
+			/* */ if (_r$2) { $s = 9; continue; }
+			/* */ $s = 10; continue;
+			/* if (_r$2) { */ case 9:
+				$r = data.Swap(m1, m0); /* */ $s = 12; case 12: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+			/* } */ case 10:
+		/* } */ case 6:
+		/* */ $s = -1; case -1: } return; } if ($f === undefined) { $f = { $blk: medianOfThree }; } $f.$ptr = $ptr; $f._r = _r; $f._r$1 = _r$1; $f._r$2 = _r$2; $f.data = data; $f.m0 = m0; $f.m1 = m1; $f.m2 = m2; $f.$s = $s; $f.$r = $r; return $f;
+	};
+	swapRange = function(data, a, b, n) {
+		var $ptr, a, b, data, i, n, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; a = $f.a; b = $f.b; data = $f.data; i = $f.i; n = $f.n; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		i = 0;
+		/* while (true) { */ case 1:
+			/* if (!(i < n)) { break; } */ if(!(i < n)) { $s = 2; continue; }
+			$r = data.Swap(a + i >> 0, b + i >> 0); /* */ $s = 3; case 3: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+			i = i + (1) >> 0;
+		/* } */ $s = 1; continue; case 2:
+		/* */ $s = -1; case -1: } return; } if ($f === undefined) { $f = { $blk: swapRange }; } $f.$ptr = $ptr; $f.a = a; $f.b = b; $f.data = data; $f.i = i; $f.n = n; $f.$s = $s; $f.$r = $r; return $f;
+	};
+	doPivot = function(data, lo, hi) {
+		var $ptr, _q, _q$1, _r, _r$1, _r$2, _r$3, _tmp, _tmp$1, _tmp$2, _tmp$3, _tmp$4, _tmp$5, a, b, c, d, data, hi, lo, m, midhi, midlo, n, pivot, s, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _q = $f._q; _q$1 = $f._q$1; _r = $f._r; _r$1 = $f._r$1; _r$2 = $f._r$2; _r$3 = $f._r$3; _tmp = $f._tmp; _tmp$1 = $f._tmp$1; _tmp$2 = $f._tmp$2; _tmp$3 = $f._tmp$3; _tmp$4 = $f._tmp$4; _tmp$5 = $f._tmp$5; a = $f.a; b = $f.b; c = $f.c; d = $f.d; data = $f.data; hi = $f.hi; lo = $f.lo; m = $f.m; midhi = $f.midhi; midlo = $f.midlo; n = $f.n; pivot = $f.pivot; s = $f.s; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		midlo = 0;
+		midhi = 0;
+		m = lo + (_q = ((hi - lo >> 0)) / 2, (_q === _q && _q !== 1/0 && _q !== -1/0) ? _q >> 0 : $throwRuntimeError("integer divide by zero")) >> 0;
+		/* */ if ((hi - lo >> 0) > 40) { $s = 1; continue; }
+		/* */ $s = 2; continue;
+		/* if ((hi - lo >> 0) > 40) { */ case 1:
+			s = (_q$1 = ((hi - lo >> 0)) / 8, (_q$1 === _q$1 && _q$1 !== 1/0 && _q$1 !== -1/0) ? _q$1 >> 0 : $throwRuntimeError("integer divide by zero"));
+			$r = medianOfThree(data, lo, lo + s >> 0, lo + ($imul(2, s)) >> 0); /* */ $s = 3; case 3: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+			$r = medianOfThree(data, m, m - s >> 0, m + s >> 0); /* */ $s = 4; case 4: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+			$r = medianOfThree(data, hi - 1 >> 0, (hi - 1 >> 0) - s >> 0, (hi - 1 >> 0) - ($imul(2, s)) >> 0); /* */ $s = 5; case 5: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		/* } */ case 2:
+		$r = medianOfThree(data, lo, m, hi - 1 >> 0); /* */ $s = 6; case 6: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		pivot = lo;
+		_tmp = lo + 1 >> 0;
+		_tmp$1 = lo + 1 >> 0;
+		_tmp$2 = hi;
+		_tmp$3 = hi;
+		a = _tmp;
+		b = _tmp$1;
+		c = _tmp$2;
+		d = _tmp$3;
+		/* while (true) { */ case 7:
+			/* while (true) { */ case 9:
+				/* if (!(b < c)) { break; } */ if(!(b < c)) { $s = 10; continue; }
+				_r = data.Less(b, pivot); /* */ $s = 15; case 15: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
+				/* */ if (_r) { $s = 11; continue; }
+				_r$1 = data.Less(pivot, b); /* */ $s = 16; case 16: if($c) { $c = false; _r$1 = _r$1.$blk(); } if (_r$1 && _r$1.$blk !== undefined) { break s; }
+				/* */ if (!_r$1) { $s = 12; continue; }
+				/* */ $s = 13; continue;
+				/* if (_r) { */ case 11:
+					b = b + (1) >> 0;
+					$s = 14; continue;
+				/* } else if (!_r$1) { */ case 12:
+					$r = data.Swap(a, b); /* */ $s = 17; case 17: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+					a = a + (1) >> 0;
+					b = b + (1) >> 0;
+					$s = 14; continue;
+				/* } else { */ case 13:
+					/* break; */ $s = 10; continue;
+				/* } */ case 14:
+			/* } */ $s = 9; continue; case 10:
+			/* while (true) { */ case 18:
+				/* if (!(b < c)) { break; } */ if(!(b < c)) { $s = 19; continue; }
+				_r$2 = data.Less(pivot, c - 1 >> 0); /* */ $s = 24; case 24: if($c) { $c = false; _r$2 = _r$2.$blk(); } if (_r$2 && _r$2.$blk !== undefined) { break s; }
+				/* */ if (_r$2) { $s = 20; continue; }
+				_r$3 = data.Less(c - 1 >> 0, pivot); /* */ $s = 25; case 25: if($c) { $c = false; _r$3 = _r$3.$blk(); } if (_r$3 && _r$3.$blk !== undefined) { break s; }
+				/* */ if (!_r$3) { $s = 21; continue; }
+				/* */ $s = 22; continue;
+				/* if (_r$2) { */ case 20:
+					c = c - (1) >> 0;
+					$s = 23; continue;
+				/* } else if (!_r$3) { */ case 21:
+					$r = data.Swap(c - 1 >> 0, d - 1 >> 0); /* */ $s = 26; case 26: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+					c = c - (1) >> 0;
+					d = d - (1) >> 0;
+					$s = 23; continue;
+				/* } else { */ case 22:
+					/* break; */ $s = 19; continue;
+				/* } */ case 23:
+			/* } */ $s = 18; continue; case 19:
+			if (b >= c) {
+				/* break; */ $s = 8; continue;
+			}
+			$r = data.Swap(b, c - 1 >> 0); /* */ $s = 27; case 27: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+			b = b + (1) >> 0;
+			c = c - (1) >> 0;
+		/* } */ $s = 7; continue; case 8:
+		n = min(b - a >> 0, a - lo >> 0);
+		$r = swapRange(data, lo, b - n >> 0, n); /* */ $s = 28; case 28: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		n = min(hi - d >> 0, d - c >> 0);
+		$r = swapRange(data, c, hi - n >> 0, n); /* */ $s = 29; case 29: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		_tmp$4 = (lo + b >> 0) - a >> 0;
+		_tmp$5 = hi - ((d - c >> 0)) >> 0;
+		midlo = _tmp$4;
+		midhi = _tmp$5;
+		return [midlo, midhi];
+		/* */ } return; } if ($f === undefined) { $f = { $blk: doPivot }; } $f.$ptr = $ptr; $f._q = _q; $f._q$1 = _q$1; $f._r = _r; $f._r$1 = _r$1; $f._r$2 = _r$2; $f._r$3 = _r$3; $f._tmp = _tmp; $f._tmp$1 = _tmp$1; $f._tmp$2 = _tmp$2; $f._tmp$3 = _tmp$3; $f._tmp$4 = _tmp$4; $f._tmp$5 = _tmp$5; $f.a = a; $f.b = b; $f.c = c; $f.d = d; $f.data = data; $f.hi = hi; $f.lo = lo; $f.m = m; $f.midhi = midhi; $f.midlo = midlo; $f.n = n; $f.pivot = pivot; $f.s = s; $f.$s = $s; $f.$r = $r; return $f;
+	};
+	quickSort = function(data, a, b, maxDepth) {
+		var $ptr, _r, _tuple, a, b, data, maxDepth, mhi, mlo, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _r = $f._r; _tuple = $f._tuple; a = $f.a; b = $f.b; data = $f.data; maxDepth = $f.maxDepth; mhi = $f.mhi; mlo = $f.mlo; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		/* while (true) { */ case 1:
+			/* if (!((b - a >> 0) > 7)) { break; } */ if(!((b - a >> 0) > 7)) { $s = 2; continue; }
+			/* */ if (maxDepth === 0) { $s = 3; continue; }
+			/* */ $s = 4; continue;
+			/* if (maxDepth === 0) { */ case 3:
+				$r = heapSort(data, a, b); /* */ $s = 5; case 5: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+				return;
+			/* } */ case 4:
+			maxDepth = maxDepth - (1) >> 0;
+			_r = doPivot(data, a, b); /* */ $s = 6; case 6: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
+			_tuple = _r;
+			mlo = _tuple[0];
+			mhi = _tuple[1];
+			/* */ if ((mlo - a >> 0) < (b - mhi >> 0)) { $s = 7; continue; }
+			/* */ $s = 8; continue;
+			/* if ((mlo - a >> 0) < (b - mhi >> 0)) { */ case 7:
+				$r = quickSort(data, a, mlo, maxDepth); /* */ $s = 10; case 10: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+				a = mhi;
+				$s = 9; continue;
+			/* } else { */ case 8:
+				$r = quickSort(data, mhi, b, maxDepth); /* */ $s = 11; case 11: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+				b = mlo;
+			/* } */ case 9:
+		/* } */ $s = 1; continue; case 2:
+		/* */ if ((b - a >> 0) > 1) { $s = 12; continue; }
+		/* */ $s = 13; continue;
+		/* if ((b - a >> 0) > 1) { */ case 12:
+			$r = insertionSort(data, a, b); /* */ $s = 14; case 14: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		/* } */ case 13:
+		/* */ $s = -1; case -1: } return; } if ($f === undefined) { $f = { $blk: quickSort }; } $f.$ptr = $ptr; $f._r = _r; $f._tuple = _tuple; $f.a = a; $f.b = b; $f.data = data; $f.maxDepth = maxDepth; $f.mhi = mhi; $f.mlo = mlo; $f.$s = $s; $f.$r = $r; return $f;
+	};
+	Sort = function(data) {
+		var $ptr, _r, data, i, maxDepth, n, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _r = $f._r; data = $f.data; i = $f.i; maxDepth = $f.maxDepth; n = $f.n; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		_r = data.Len(); /* */ $s = 1; case 1: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
+		n = _r;
+		maxDepth = 0;
+		i = n;
+		while (true) {
+			if (!(i > 0)) { break; }
+			maxDepth = maxDepth + (1) >> 0;
+			i = (i >> $min((1), 31)) >> 0;
+		}
+		maxDepth = $imul(maxDepth, (2));
+		$r = quickSort(data, 0, n, maxDepth); /* */ $s = 2; case 2: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		/* */ $s = -1; case -1: } return; } if ($f === undefined) { $f = { $blk: Sort }; } $f.$ptr = $ptr; $f._r = _r; $f.data = data; $f.i = i; $f.maxDepth = maxDepth; $f.n = n; $f.$s = $s; $f.$r = $r; return $f;
+	};
+	$pkg.Sort = Sort;
+	$init = function() {
+		$pkg.$init = function() {};
+		/* */ var $f, $c = false, $s = 0, $r; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		/* */ } return; } if ($f === undefined) { $f = { $blk: $init }; } $f.$s = $s; $f.$r = $r; return $f;
+	};
+	$pkg.$init = $init;
+	return $pkg;
+})();
 $packages["."] = (function() {
-	var $pkg = {}, $init, js, webgl, rand, funcType, main;
+	var $pkg = {}, $init, js, rand, sort, HWChromosome, HWCitizen, ByFitness, HelloWorldGA, sliceType, sliceType$1, sliceType$2, sliceType$3, funcType, ptrType, ptrType$1, MakeHelloWorldGA, Debug, main;
 	js = $packages["github.com/gopherjs/gopherjs/js"];
-	webgl = $packages["github.com/gopherjs/webgl"];
 	rand = $packages["math/rand"];
+	sort = $packages["sort"];
+	HWChromosome = $pkg.HWChromosome = $newType(8, $kindString, "main.HWChromosome", "HWChromosome", ".", null);
+	HWCitizen = $pkg.HWCitizen = $newType(0, $kindStruct, "main.HWCitizen", "HWCitizen", ".", function(value_, fitness_) {
+		this.$val = this;
+		if (arguments.length === 0) {
+			this.value = "";
+			this.fitness = 0;
+			return;
+		}
+		this.value = value_;
+		this.fitness = fitness_;
+	});
+	ByFitness = $pkg.ByFitness = $newType(12, $kindSlice, "main.ByFitness", "ByFitness", ".", null);
+	HelloWorldGA = $pkg.HelloWorldGA = $newType(0, $kindStruct, "main.HelloWorldGA", "HelloWorldGA", ".", function(population_, goal_) {
+		this.$val = this;
+		if (arguments.length === 0) {
+			this.population = sliceType.nil;
+			this.goal = "";
+			return;
+		}
+		this.population = population_;
+		this.goal = goal_;
+	});
+	sliceType = $sliceType(HWCitizen);
+	sliceType$1 = $sliceType($Uint8);
+	sliceType$2 = $sliceType($emptyInterface);
+	sliceType$3 = $sliceType(HWChromosome);
 	funcType = $funcType([], [], false);
+	ptrType = $ptrType(HWCitizen);
+	ptrType$1 = $ptrType(HelloWorldGA);
+	ByFitness.prototype.Len = function() {
+		var $ptr, a;
+		a = this;
+		return a.$length;
+	};
+	$ptrType(ByFitness).prototype.Len = function() { return this.$get().Len(); };
+	ByFitness.prototype.Swap = function(i, j) {
+		var $ptr, _tmp, _tmp$1, a, i, j;
+		a = this;
+		_tmp = $clone(((j < 0 || j >= a.$length) ? $throwRuntimeError("index out of range") : a.$array[a.$offset + j]), HWCitizen);
+		_tmp$1 = $clone(((i < 0 || i >= a.$length) ? $throwRuntimeError("index out of range") : a.$array[a.$offset + i]), HWCitizen);
+		HWCitizen.copy(((i < 0 || i >= a.$length) ? $throwRuntimeError("index out of range") : a.$array[a.$offset + i]), _tmp);
+		HWCitizen.copy(((j < 0 || j >= a.$length) ? $throwRuntimeError("index out of range") : a.$array[a.$offset + j]), _tmp$1);
+	};
+	$ptrType(ByFitness).prototype.Swap = function(i, j) { return this.$get().Swap(i, j); };
+	ByFitness.prototype.Less = function(i, j) {
+		var $ptr, a, i, j;
+		a = this;
+		return ((i < 0 || i >= a.$length) ? $throwRuntimeError("index out of range") : a.$array[a.$offset + i]).fitness < ((j < 0 || j >= a.$length) ? $throwRuntimeError("index out of range") : a.$array[a.$offset + j]).fitness;
+	};
+	$ptrType(ByFitness).prototype.Less = function(i, j) { return this.$get().Less(i, j); };
+	MakeHelloWorldGA = function(chroms, goal) {
+		var $ptr, _i, _ref, chrom, chroms, goal, h, index, x, x$1;
+		h = new HelloWorldGA.ptr($makeSlice(sliceType, chroms.$length), goal);
+		_ref = chroms;
+		_i = 0;
+		while (true) {
+			if (!(_i < _ref.$length)) { break; }
+			index = _i;
+			chrom = ((_i < 0 || _i >= _ref.$length) ? $throwRuntimeError("index out of range") : _ref.$array[_ref.$offset + _i]);
+			HWCitizen.copy((x = h.population, ((index < 0 || index >= x.$length) ? $throwRuntimeError("index out of range") : x.$array[x.$offset + index])), new HWCitizen.ptr(chrom, 0));
+			h.HWFitness((x$1 = h.population, ((index < 0 || index >= x$1.$length) ? $throwRuntimeError("index out of range") : x$1.$array[x$1.$offset + index])));
+			_i++;
+		}
+		return h;
+	};
+	$pkg.MakeHelloWorldGA = MakeHelloWorldGA;
+	HelloWorldGA.ptr.prototype.HWFitness = function(test) {
+		var $ptr, dif, h, i, test, total_cost;
+		h = this;
+		total_cost = 0;
+		i = 0;
+		while (true) {
+			if (!(i < h.goal.length)) { break; }
+			dif = (h.goal.charCodeAt(i) >> 0) - (test.value.charCodeAt(i) >> 0) >> 0;
+			total_cost = total_cost + (($imul(dif, dif))) >> 0;
+			i = i + (1) >> 0;
+		}
+		test.fitness = total_cost;
+	};
+	HelloWorldGA.prototype.HWFitness = function(test) { return this.$val.HWFitness(test); };
+	HelloWorldGA.ptr.prototype.Crossover = function(p1, p2) {
+		var $ptr, _r, h, n1, n2, p1, p2, pivot, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _r = $f._r; h = $f.h; n1 = $f.n1; n2 = $f.n2; p1 = $f.p1; p2 = $f.p2; pivot = $f.pivot; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		n1 = new HWCitizen.ptr("", 0);
+		n2 = new HWCitizen.ptr("", 0);
+		p2 = $clone(p2, HWCitizen);
+		p1 = $clone(p1, HWCitizen);
+		h = this;
+		_r = rand.Intn(h.goal.length); /* */ $s = 1; case 1: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
+		pivot = _r;
+		n1.value = p1.value.substring(0, pivot) + p2.value.substring(pivot);
+		n2.value = p2.value.substring(0, pivot) + p1.value.substring(pivot);
+		return [n1, n2];
+		/* */ } return; } if ($f === undefined) { $f = { $blk: HelloWorldGA.ptr.prototype.Crossover }; } $f.$ptr = $ptr; $f._r = _r; $f.h = h; $f.n1 = n1; $f.n2 = n2; $f.p1 = p1; $f.p2 = p2; $f.pivot = pivot; $f.$s = $s; $f.$r = $r; return $f;
+	};
+	HelloWorldGA.prototype.Crossover = function(p1, p2) { return this.$val.Crossover(p1, p2); };
+	HelloWorldGA.ptr.prototype.Mutate = function(p1) {
+		var $ptr, _r, _r$1, b, geneIndex, h, p1, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _r = $f._r; _r$1 = $f._r$1; b = $f.b; geneIndex = $f.geneIndex; h = $f.h; p1 = $f.p1; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		h = this;
+		_r = rand.Intn(p1.value.length); /* */ $s = 1; case 1: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
+		geneIndex = _r;
+		b = new sliceType$1($stringToBytes(p1.value));
+		_r$1 = rand.Intn(13); /* */ $s = 2; case 2: if($c) { $c = false; _r$1 = _r$1.$blk(); } if (_r$1 && _r$1.$blk !== undefined) { break s; }
+		((geneIndex < 0 || geneIndex >= b.$length) ? $throwRuntimeError("index out of range") : b.$array[b.$offset + geneIndex] = (((geneIndex < 0 || geneIndex >= b.$length) ? $throwRuntimeError("index out of range") : b.$array[b.$offset + geneIndex]) + (((_r$1 - 6 >> 0) << 24 >>> 24)) << 24 >>> 24));
+		p1.value = $bytesToString(b);
+		/* */ $s = -1; case -1: } return; } if ($f === undefined) { $f = { $blk: HelloWorldGA.ptr.prototype.Mutate }; } $f.$ptr = $ptr; $f._r = _r; $f._r$1 = _r$1; $f.b = b; $f.geneIndex = geneIndex; $f.h = h; $f.p1 = p1; $f.$s = $s; $f.$r = $r; return $f;
+	};
+	HelloWorldGA.prototype.Mutate = function(p1) { return this.$val.Mutate(p1); };
+	HelloWorldGA.ptr.prototype.GetPopulation = function() {
+		var $ptr, h;
+		h = this;
+		return h.population;
+	};
+	HelloWorldGA.prototype.GetPopulation = function() { return this.$val.GetPopulation(); };
+	HelloWorldGA.ptr.prototype.mate = function() {
+		var $ptr, _i, _i$1, _q, _q$1, _r, _r$1, _r$2, _r$3, _r$4, _ref, _ref$1, _tuple, avg_fitness, citizen, citizen$1, h, i, index, index$1, livingTotal, newSpots, new_population, newborn1, newborn2, parent1, parent2, x, x$1, x$2, x$3, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _i = $f._i; _i$1 = $f._i$1; _q = $f._q; _q$1 = $f._q$1; _r = $f._r; _r$1 = $f._r$1; _r$2 = $f._r$2; _r$3 = $f._r$3; _r$4 = $f._r$4; _ref = $f._ref; _ref$1 = $f._ref$1; _tuple = $f._tuple; avg_fitness = $f.avg_fitness; citizen = $f.citizen; citizen$1 = $f.citizen$1; h = $f.h; i = $f.i; index = $f.index; index$1 = $f.index$1; livingTotal = $f.livingTotal; newSpots = $f.newSpots; new_population = $f.new_population; newborn1 = $f.newborn1; newborn2 = $f.newborn2; parent1 = $f.parent1; parent2 = $f.parent2; x = $f.x; x$1 = $f.x$1; x$2 = $f.x$2; x$3 = $f.x$3; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		h = this;
+		new_population = $makeSlice(sliceType, 0, h.population.$length);
+		avg_fitness = 0;
+		_ref = h.population;
+		_i = 0;
+		while (true) {
+			if (!(_i < _ref.$length)) { break; }
+			index = _i;
+			citizen = $clone(((_i < 0 || _i >= _ref.$length) ? $throwRuntimeError("index out of range") : _ref.$array[_ref.$offset + _i]), HWCitizen);
+			Debug(new sliceType$2([new $String("new fitness of"), new HWChromosome(citizen.value), new $Int(citizen.fitness)]));
+			avg_fitness = avg_fitness + (citizen.fitness) >> 0;
+			HWCitizen.copy((x = h.population, ((index < 0 || index >= x.$length) ? $throwRuntimeError("index out of range") : x.$array[x.$offset + index])), citizen);
+			_i++;
+		}
+		avg_fitness = (_q = avg_fitness / (h.population.$length), (_q === _q && _q !== 1/0 && _q !== -1/0) ? _q >> 0 : $throwRuntimeError("integer divide by zero"));
+		$r = sort.Sort((x$1 = h.population, $subslice(new ByFitness(x$1.$array), x$1.$offset, x$1.$offset + x$1.$length))); /* */ $s = 1; case 1: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		_ref$1 = h.population;
+		_i$1 = 0;
+		while (true) {
+			if (!(_i$1 < _ref$1.$length)) { break; }
+			index$1 = _i$1;
+			citizen$1 = $clone(((_i$1 < 0 || _i$1 >= _ref$1.$length) ? $throwRuntimeError("index out of range") : _ref$1.$array[_ref$1.$offset + _i$1]), HWCitizen);
+			if (citizen$1.fitness <= avg_fitness) {
+				new_population = $append(new_population, citizen$1);
+				if (index$1 > (_q$1 = h.population.$length / 2, (_q$1 === _q$1 && _q$1 !== 1/0 && _q$1 !== -1/0) ? _q$1 >> 0 : $throwRuntimeError("integer divide by zero"))) {
+					break;
+				}
+			} else {
+				break;
+			}
+			_i$1++;
+		}
+		livingTotal = new_population.$length;
+		newSpots = h.population.$length - livingTotal >> 0;
+		Debug(new sliceType$2([new $String("New Spots"), new $Int(newSpots), new $Int(livingTotal)]));
+		i = 0;
+		/* while (true) { */ case 2:
+			/* if (!(i < newSpots)) { break; } */ if(!(i < newSpots)) { $s = 3; continue; }
+			newborn1 = [newborn1];
+			newborn2 = [newborn2];
+			parent1 = $clone((x$2 = (_r = i % livingTotal, _r === _r ? _r : $throwRuntimeError("integer divide by zero")), ((x$2 < 0 || x$2 >= new_population.$length) ? $throwRuntimeError("index out of range") : new_population.$array[new_population.$offset + x$2])), HWCitizen);
+			parent2 = $clone((x$3 = (_r$1 = ((i + 1 >> 0)) % livingTotal, _r$1 === _r$1 ? _r$1 : $throwRuntimeError("integer divide by zero")), ((x$3 < 0 || x$3 >= new_population.$length) ? $throwRuntimeError("index out of range") : new_population.$array[new_population.$offset + x$3])), HWCitizen);
+			_r$2 = h.Crossover(parent1, parent2); /* */ $s = 4; case 4: if($c) { $c = false; _r$2 = _r$2.$blk(); } if (_r$2 && _r$2.$blk !== undefined) { break s; }
+			_tuple = _r$2;
+			newborn1[0] = $clone(_tuple[0], HWCitizen);
+			newborn2[0] = $clone(_tuple[1], HWCitizen);
+			_r$3 = rand.Intn(5); /* */ $s = 7; case 7: if($c) { $c = false; _r$3 = _r$3.$blk(); } if (_r$3 && _r$3.$blk !== undefined) { break s; }
+			/* */ if (_r$3 === 0) { $s = 5; continue; }
+			/* */ $s = 6; continue;
+			/* if (_r$3 === 0) { */ case 5:
+				Debug(new sliceType$2([new $String("Mutate 1")]));
+				$r = h.Mutate(newborn1[0]); /* */ $s = 8; case 8: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+			/* } */ case 6:
+			_r$4 = rand.Intn(5); /* */ $s = 11; case 11: if($c) { $c = false; _r$4 = _r$4.$blk(); } if (_r$4 && _r$4.$blk !== undefined) { break s; }
+			/* */ if (_r$4 === 0) { $s = 9; continue; }
+			/* */ $s = 10; continue;
+			/* if (_r$4 === 0) { */ case 9:
+				Debug(new sliceType$2([new $String("Mutate 2")]));
+				$r = h.Mutate(newborn2[0]); /* */ $s = 12; case 12: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+			/* } */ case 10:
+			h.HWFitness(newborn1[0]);
+			h.HWFitness(newborn2[0]);
+			new_population = $append(new_population, newborn1[0], newborn2[0]);
+			i = i + (2) >> 0;
+		/* } */ $s = 2; continue; case 3:
+		if ((i + 1 >> 0) < newSpots) {
+			new_population = $append(new_population, (0 >= new_population.$length ? $throwRuntimeError("index out of range") : new_population.$array[new_population.$offset + 0]));
+		}
+		h.population = new_population;
+		/* */ $s = -1; case -1: } return; } if ($f === undefined) { $f = { $blk: HelloWorldGA.ptr.prototype.mate }; } $f.$ptr = $ptr; $f._i = _i; $f._i$1 = _i$1; $f._q = _q; $f._q$1 = _q$1; $f._r = _r; $f._r$1 = _r$1; $f._r$2 = _r$2; $f._r$3 = _r$3; $f._r$4 = _r$4; $f._ref = _ref; $f._ref$1 = _ref$1; $f._tuple = _tuple; $f.avg_fitness = avg_fitness; $f.citizen = citizen; $f.citizen$1 = citizen$1; $f.h = h; $f.i = i; $f.index = index; $f.index$1 = index$1; $f.livingTotal = livingTotal; $f.newSpots = newSpots; $f.new_population = new_population; $f.newborn1 = newborn1; $f.newborn2 = newborn2; $f.parent1 = parent1; $f.parent2 = parent2; $f.x = x; $f.x$1 = x$1; $f.x$2 = x$2; $f.x$3 = x$3; $f.$s = $s; $f.$r = $r; return $f;
+	};
+	HelloWorldGA.prototype.mate = function() { return this.$val.mate(); };
+	HelloWorldGA.ptr.prototype.Evolve = function() {
+		var $ptr, h, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; h = $f.h; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		h = this;
+		$r = h.mate(); /* */ $s = 1; case 1: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		/* */ $s = -1; case -1: } return; } if ($f === undefined) { $f = { $blk: HelloWorldGA.ptr.prototype.Evolve }; } $f.$ptr = $ptr; $f.h = h; $f.$s = $s; $f.$r = $r; return $f;
+	};
+	HelloWorldGA.prototype.Evolve = function() { return this.$val.Evolve(); };
+	Debug = function(args) {
+		var $ptr, args, obj;
+		(obj = $global.console, obj.log.apply(obj, $externalize(args, sliceType$2)));
+	};
+	$pkg.Debug = Debug;
 	main = function() {
-		var $ptr, addEntity1, addEntity2, addEntity3, console, document, driver, iteration, $s, $r;
-		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; addEntity1 = $f.addEntity1; addEntity2 = $f.addEntity2; addEntity3 = $f.addEntity3; console = $f.console; document = $f.document; driver = $f.driver; iteration = $f.iteration; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		var $ptr, _r, addEntity1, addEntity2, addEntity3, console, document, driver, helloWorldGA, hwgoal, i, iteration, j, populationSize, str, testChromosomes, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _r = $f._r; addEntity1 = $f.addEntity1; addEntity2 = $f.addEntity2; addEntity3 = $f.addEntity3; console = $f.console; document = $f.document; driver = $f.driver; helloWorldGA = $f.helloWorldGA; hwgoal = $f.hwgoal; i = $f.i; iteration = $f.iteration; j = $f.j; populationSize = $f.populationSize; str = $f.str; testChromosomes = $f.testChromosomes; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
 		addEntity1 = [addEntity1];
 		addEntity2 = [addEntity2];
 		addEntity3 = [addEntity3];
 		console = [console];
 		driver = [driver];
+		helloWorldGA = [helloWorldGA];
 		iteration = [iteration];
 		$r = rand.Seed(new $Int64(0, 42)); /* */ $s = 1; case 1: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
 		document = $global.document;
 		console[0] = $global.console;
 		driver[0] = document.driver;
-		addEntity3[0] = (function(addEntity1, addEntity2, addEntity3, console, driver, iteration) { return function(px, py, pz, rx, ry, rz, sx, sy, sz, color) {
+		addEntity3[0] = (function(addEntity1, addEntity2, addEntity3, console, driver, helloWorldGA, iteration) { return function(px, py, pz, rx, ry, rz, sx, sy, sz, color) {
 			var $ptr, color, px, py, pz, rx, ry, rz, sx, sy, sz;
 			driver[0].addEntity(px, py, pz, rx, ry, rz, sx, sy, sz, color);
-		}; })(addEntity1, addEntity2, addEntity3, console, driver, iteration);
-		addEntity2[0] = (function(addEntity1, addEntity2, addEntity3, console, driver, iteration) { return function $b(px, py, pz, rx, ry, rz, color) {
+		}; })(addEntity1, addEntity2, addEntity3, console, driver, helloWorldGA, iteration);
+		addEntity2[0] = (function(addEntity1, addEntity2, addEntity3, console, driver, helloWorldGA, iteration) { return function $b(px, py, pz, rx, ry, rz, color) {
 			var $ptr, color, px, py, pz, rx, ry, rz, $s, $r;
 			/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; color = $f.color; px = $f.px; py = $f.py; pz = $f.pz; rx = $f.rx; ry = $f.ry; rz = $f.rz; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
 			$r = addEntity3[0](px, py, pz, rx, ry, rz, 0, 0, 0, color); /* */ $s = 1; case 1: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
 			/* */ $s = -1; case -1: } return; } if ($f === undefined) { $f = { $blk: $b }; } $f.$ptr = $ptr; $f.color = color; $f.px = px; $f.py = py; $f.pz = pz; $f.rx = rx; $f.ry = ry; $f.rz = rz; $f.$s = $s; $f.$r = $r; return $f;
-		}; })(addEntity1, addEntity2, addEntity3, console, driver, iteration);
-		addEntity1[0] = (function(addEntity1, addEntity2, addEntity3, console, driver, iteration) { return function $b(px, py, pz, color) {
+		}; })(addEntity1, addEntity2, addEntity3, console, driver, helloWorldGA, iteration);
+		addEntity1[0] = (function(addEntity1, addEntity2, addEntity3, console, driver, helloWorldGA, iteration) { return function $b(px, py, pz, color) {
 			var $ptr, color, px, py, pz, $s, $r;
 			/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; color = $f.color; px = $f.px; py = $f.py; pz = $f.pz; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
 			$r = addEntity3[0](px, py, pz, 0, 0, 0, 0, 0, 0, color); /* */ $s = 1; case 1: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
 			/* */ $s = -1; case -1: } return; } if ($f === undefined) { $f = { $blk: $b }; } $f.$ptr = $ptr; $f.color = color; $f.px = px; $f.py = py; $f.pz = pz; $f.$s = $s; $f.$r = $r; return $f;
-		}; })(addEntity1, addEntity2, addEntity3, console, driver, iteration);
+		}; })(addEntity1, addEntity2, addEntity3, console, driver, helloWorldGA, iteration);
 		iteration[0] = 0;
-		driver[0].connect($externalize((function(addEntity1, addEntity2, addEntity3, console, driver, iteration) { return function $b() {
-			var $ptr, _arg, _arg$1, _arg$2, _arg$3, _arg$4, _r, _r$1, _r$2, _r$3, _r$4, $s, $r;
-			/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _arg = $f._arg; _arg$1 = $f._arg$1; _arg$2 = $f._arg$2; _arg$3 = $f._arg$3; _arg$4 = $f._arg$4; _r = $f._r; _r$1 = $f._r$1; _r$2 = $f._r$2; _r$3 = $f._r$3; _r$4 = $f._r$4; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		hwgoal = "Hello, world!";
+		populationSize = 64;
+		testChromosomes = $makeSlice(sliceType$3, 0, populationSize);
+		i = 0;
+		/* while (true) { */ case 2:
+			/* if (!(i < populationSize)) { break; } */ if(!(i < populationSize)) { $s = 3; continue; }
+			str = $makeSlice(sliceType$1, hwgoal.length);
+			j = 0;
+			/* while (true) { */ case 4:
+				/* if (!(j < hwgoal.length)) { break; } */ if(!(j < hwgoal.length)) { $s = 5; continue; }
+				_r = rand.Intn(64); /* */ $s = 6; case 6: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
+				((j < 0 || j >= str.$length) ? $throwRuntimeError("index out of range") : str.$array[str.$offset + j] = ((32 + _r >> 0) << 24 >>> 24));
+				j = j + (1) >> 0;
+			/* } */ $s = 4; continue; case 5:
+			testChromosomes = $append(testChromosomes, $bytesToString(str));
+			i = i + (1) >> 0;
+		/* } */ $s = 2; continue; case 3:
+		helloWorldGA[0] = MakeHelloWorldGA(testChromosomes, hwgoal);
+		driver[0].connect($externalize((function(addEntity1, addEntity2, addEntity3, console, driver, helloWorldGA, iteration) { return function $b() {
+			var $ptr, _arg, _arg$1, _arg$2, _arg$3, _arg$4, _i, _r$1, _r$2, _r$3, _r$4, _r$5, _ref, citizen, population, $s, $r;
+			/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _arg = $f._arg; _arg$1 = $f._arg$1; _arg$2 = $f._arg$2; _arg$3 = $f._arg$3; _arg$4 = $f._arg$4; _i = $f._i; _r$1 = $f._r$1; _r$2 = $f._r$2; _r$3 = $f._r$3; _r$4 = $f._r$4; _r$5 = $f._r$5; _ref = $f._ref; citizen = $f.citizen; population = $f.population; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
 			iteration[0] = iteration[0] + (1) >> 0;
-			_r = rand.Float32(); /* */ $s = 1; case 1: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
-			_arg = _r;
-			_r$1 = rand.Float32(); /* */ $s = 2; case 2: if($c) { $c = false; _r$1 = _r$1.$blk(); } if (_r$1 && _r$1.$blk !== undefined) { break s; }
-			_arg$1 = _r$1;
+			_r$1 = rand.Float32(); /* */ $s = 1; case 1: if($c) { $c = false; _r$1 = _r$1.$blk(); } if (_r$1 && _r$1.$blk !== undefined) { break s; }
+			_arg = _r$1;
+			_r$2 = rand.Float32(); /* */ $s = 2; case 2: if($c) { $c = false; _r$2 = _r$2.$blk(); } if (_r$2 && _r$2.$blk !== undefined) { break s; }
+			_arg$1 = _r$2;
 			$r = addEntity1[0](0.5, 0.5, _arg, _arg$1); /* */ $s = 3; case 3: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
-			_r$2 = rand.Float32(); /* */ $s = 4; case 4: if($c) { $c = false; _r$2 = _r$2.$blk(); } if (_r$2 && _r$2.$blk !== undefined) { break s; }
-			_arg$2 = _r$2;
-			_r$3 = rand.Float32(); /* */ $s = 5; case 5: if($c) { $c = false; _r$3 = _r$3.$blk(); } if (_r$3 && _r$3.$blk !== undefined) { break s; }
-			_arg$3 = _r$3;
-			_r$4 = rand.Float32(); /* */ $s = 6; case 6: if($c) { $c = false; _r$4 = _r$4.$blk(); } if (_r$4 && _r$4.$blk !== undefined) { break s; }
-			_arg$4 = _r$4;
+			_r$3 = rand.Float32(); /* */ $s = 4; case 4: if($c) { $c = false; _r$3 = _r$3.$blk(); } if (_r$3 && _r$3.$blk !== undefined) { break s; }
+			_arg$2 = _r$3;
+			_r$4 = rand.Float32(); /* */ $s = 5; case 5: if($c) { $c = false; _r$4 = _r$4.$blk(); } if (_r$4 && _r$4.$blk !== undefined) { break s; }
+			_arg$3 = _r$4;
+			_r$5 = rand.Float32(); /* */ $s = 6; case 6: if($c) { $c = false; _r$5 = _r$5.$blk(); } if (_r$5 && _r$5.$blk !== undefined) { break s; }
+			_arg$4 = _r$5;
 			$r = addEntity2[0](0.5, _arg$2, 0.550000011920929, 1, _arg$3, 0.550000011920929, _arg$4); /* */ $s = 7; case 7: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
 			driver[0].update();
-			console[0].log($externalize("Hello", $String), iteration[0]);
-			/* */ $s = -1; case -1: } return; } if ($f === undefined) { $f = { $blk: $b }; } $f.$ptr = $ptr; $f._arg = _arg; $f._arg$1 = _arg$1; $f._arg$2 = _arg$2; $f._arg$3 = _arg$3; $f._arg$4 = _arg$4; $f._r = _r; $f._r$1 = _r$1; $f._r$2 = _r$2; $f._r$3 = _r$3; $f._r$4 = _r$4; $f.$s = $s; $f.$r = $r; return $f;
-		}; })(addEntity1, addEntity2, addEntity3, console, driver, iteration), funcType));
-		/* */ $s = -1; case -1: } return; } if ($f === undefined) { $f = { $blk: main }; } $f.$ptr = $ptr; $f.addEntity1 = addEntity1; $f.addEntity2 = addEntity2; $f.addEntity3 = addEntity3; $f.console = console; $f.document = document; $f.driver = driver; $f.iteration = iteration; $f.$s = $s; $f.$r = $r; return $f;
+			console[0].log($externalize("Iteration:", $String), iteration[0]);
+			$r = helloWorldGA[0].Evolve(); /* */ $s = 8; case 8: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+			population = helloWorldGA[0].GetPopulation();
+			_ref = population;
+			_i = 0;
+			while (true) {
+				if (!(_i < _ref.$length)) { break; }
+				citizen = $clone(((_i < 0 || _i >= _ref.$length) ? $throwRuntimeError("index out of range") : _ref.$array[_ref.$offset + _i]), HWCitizen);
+				console[0].log($externalize("Chromosome:", $String), $externalize(citizen.value, HWChromosome), citizen.fitness);
+				_i++;
+			}
+			/* */ $s = -1; case -1: } return; } if ($f === undefined) { $f = { $blk: $b }; } $f.$ptr = $ptr; $f._arg = _arg; $f._arg$1 = _arg$1; $f._arg$2 = _arg$2; $f._arg$3 = _arg$3; $f._arg$4 = _arg$4; $f._i = _i; $f._r$1 = _r$1; $f._r$2 = _r$2; $f._r$3 = _r$3; $f._r$4 = _r$4; $f._r$5 = _r$5; $f._ref = _ref; $f.citizen = citizen; $f.population = population; $f.$s = $s; $f.$r = $r; return $f;
+		}; })(addEntity1, addEntity2, addEntity3, console, driver, helloWorldGA, iteration), funcType));
+		/* */ $s = -1; case -1: } return; } if ($f === undefined) { $f = { $blk: main }; } $f.$ptr = $ptr; $f._r = _r; $f.addEntity1 = addEntity1; $f.addEntity2 = addEntity2; $f.addEntity3 = addEntity3; $f.console = console; $f.document = document; $f.driver = driver; $f.helloWorldGA = helloWorldGA; $f.hwgoal = hwgoal; $f.i = i; $f.iteration = iteration; $f.j = j; $f.populationSize = populationSize; $f.str = str; $f.testChromosomes = testChromosomes; $f.$s = $s; $f.$r = $r; return $f;
 	};
+	ByFitness.methods = [{prop: "Len", name: "Len", pkg: "", typ: $funcType([], [$Int], false)}, {prop: "Swap", name: "Swap", pkg: "", typ: $funcType([$Int, $Int], [], false)}, {prop: "Less", name: "Less", pkg: "", typ: $funcType([$Int, $Int], [$Bool], false)}];
+	ptrType$1.methods = [{prop: "HWFitness", name: "HWFitness", pkg: "", typ: $funcType([ptrType], [], false)}, {prop: "Crossover", name: "Crossover", pkg: "", typ: $funcType([HWCitizen, HWCitizen], [HWCitizen, HWCitizen], false)}, {prop: "Mutate", name: "Mutate", pkg: "", typ: $funcType([ptrType], [], false)}, {prop: "GetPopulation", name: "GetPopulation", pkg: "", typ: $funcType([], [sliceType], false)}, {prop: "mate", name: "mate", pkg: ".", typ: $funcType([], [], false)}, {prop: "Evolve", name: "Evolve", pkg: "", typ: $funcType([], [], false)}];
+	HWCitizen.init([{prop: "value", name: "value", pkg: ".", typ: HWChromosome, tag: ""}, {prop: "fitness", name: "fitness", pkg: ".", typ: $Int, tag: ""}]);
+	ByFitness.init(HWCitizen);
+	HelloWorldGA.init([{prop: "population", name: "population", pkg: ".", typ: sliceType, tag: ""}, {prop: "goal", name: "goal", pkg: ".", typ: HWChromosome, tag: ""}]);
 	$init = function() {
 		$pkg.$init = function() {};
 		/* */ var $f, $c = false, $s = 0, $r; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
 		$r = js.$init(); /* */ $s = 1; case 1: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
-		$r = webgl.$init(); /* */ $s = 2; case 2: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
-		$r = rand.$init(); /* */ $s = 3; case 3: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		$r = rand.$init(); /* */ $s = 2; case 2: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		$r = sort.$init(); /* */ $s = 3; case 3: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
 		/* */ if ($pkg === $mainPkg) { $s = 4; continue; }
 		/* */ $s = 5; continue;
 		/* if ($pkg === $mainPkg) { */ case 4:

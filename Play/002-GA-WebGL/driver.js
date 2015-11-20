@@ -8,7 +8,7 @@ var offset = new THREE.Vector3( 10, 10, 10 );
 
 var clock = new THREE.Clock();
 var lastIter = 0;
-var intervalTime = .5; // seconds
+var intervalTime = .1; // seconds
 init();
 animate();
 
