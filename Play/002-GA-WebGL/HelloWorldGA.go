@@ -69,7 +69,6 @@ func (h *HelloWorldGA) mate() {
 	new_population := make([]HWCitizen, 0, len(h.population))
 	avg_fitness := 0
 	for index, citizen := range h.population {
-		Debug("new fitness of", citizen.value, citizen.fitness)
 		avg_fitness += citizen.fitness
 		h.population[index] = citizen
 	}
@@ -90,26 +89,29 @@ func (h *HelloWorldGA) mate() {
 	// fill the rest of the new_population with crossovers
 	livingTotal := len(new_population)
 	newSpots := len(h.population) - livingTotal
-	Debug("New Spots", newSpots, livingTotal)
+	Debug("New Spots", newSpots, livingTotal, newSpots+livingTotal)
 	i := 0
-	for ; i < newSpots; i += 2 {
+	mutationCount := 0
+	for ; i < newSpots-1; i += 2 {
 		parent1 := new_population[i%livingTotal]
 		parent2 := new_population[(i+1)%livingTotal]
 		newborn1, newborn2 := h.Crossover(parent1, parent2)
 		// 1 in 5 mutate
 		if rand.Intn(5) == 0 {
-			Debug("Mutate 1")
 			h.Mutate(&newborn1)
+			mutationCount += 1
 		}
 		if rand.Intn(5) == 0 {
-			Debug("Mutate 2")
 			h.Mutate(&newborn2)
+			mutationCount += 1
 		}
 		h.HWFitness(&newborn1)
 		h.HWFitness(&newborn2)
 		new_population = append(new_population, newborn1, newborn2)
 	}
-	if i+1 < newSpots {
+	mutationRatio := float64(mutationCount) / float64(newSpots)
+	Debug("Mutations:", mutationCount, "/", newSpots, "=", float64(int(mutationRatio*1e3))*1e-1, "%")
+	if i < newSpots {
 		new_population = append(new_population, new_population[0])
 	}
 	h.population = new_population

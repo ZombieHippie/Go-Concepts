@@ -1,4 +1,4 @@
-var container, stats;
+var container, stats, visuallog;
 var camera, controls, scene, renderer;
 var objects = [];
 var highlightBox;
@@ -15,6 +15,7 @@ animate();
 function init() {
 
   container = document.getElementById( "container" );
+  visuallog = document.getElementById( "visuallog" );
 
   camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 10000 );
   camera.position.z = 1000;
@@ -107,6 +108,7 @@ function Driver (scene) {
   this.geometry = new THREE.Geometry()
   this.defaultMaterial = new THREE.MeshLambertMaterial({ color: 0xffffff, shading: THREE.FlatShading, vertexColors: THREE.VertexColors } )
 
+  this.log = []
 }
 Driver.prototype.connect = function(iter_fn) {
   console.log("Driver Connected.")
@@ -163,6 +165,13 @@ Driver.prototype.update = function () {
   this.geometry = new THREE.Geometry()
 }
 
+Driver.prototype.visualLog = function() {
+  this.log.push(Array.prototype.slice.call(arguments).join(" "))
+};
+Driver.prototype.updateVisualLog = function() {
+  visuallog.innerText = this.log.join('\n')
+  this.log = []
+};
 
 function applyVertexColors( g, c ) {
 

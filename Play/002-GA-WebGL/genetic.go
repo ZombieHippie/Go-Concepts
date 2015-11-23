@@ -6,7 +6,7 @@ import (
 )
 
 func Debug(args ...interface{}) {
-	js.Global.Get("console").Call("log", args...)
+	js.Global.Get("document").Get("driver").Call("visualLog", args...)
 }
 
 func main() {
@@ -50,7 +50,8 @@ func main() {
 		helloWorldGA.Evolve()
 		population := helloWorldGA.GetPopulation()
 		for _, citizen := range population {
-			console.Call("log", "Chromosome:", citizen.value, citizen.fitness)
+			Debug("Chromosome:", citizen.value, citizen.fitness)
 		}
+		driver.Call("updateVisualLog")
 	})
 }

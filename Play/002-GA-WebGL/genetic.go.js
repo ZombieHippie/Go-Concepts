@@ -3168,8 +3168,8 @@ $packages["."] = (function() {
 	};
 	HelloWorldGA.prototype.GetPopulation = function() { return this.$val.GetPopulation(); };
 	HelloWorldGA.ptr.prototype.mate = function() {
-		var $ptr, _i, _i$1, _q, _q$1, _r, _r$1, _r$2, _r$3, _r$4, _ref, _ref$1, _tuple, avg_fitness, citizen, citizen$1, h, i, index, index$1, livingTotal, newSpots, new_population, newborn1, newborn2, parent1, parent2, x, x$1, x$2, x$3, $s, $r;
-		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _i = $f._i; _i$1 = $f._i$1; _q = $f._q; _q$1 = $f._q$1; _r = $f._r; _r$1 = $f._r$1; _r$2 = $f._r$2; _r$3 = $f._r$3; _r$4 = $f._r$4; _ref = $f._ref; _ref$1 = $f._ref$1; _tuple = $f._tuple; avg_fitness = $f.avg_fitness; citizen = $f.citizen; citizen$1 = $f.citizen$1; h = $f.h; i = $f.i; index = $f.index; index$1 = $f.index$1; livingTotal = $f.livingTotal; newSpots = $f.newSpots; new_population = $f.new_population; newborn1 = $f.newborn1; newborn2 = $f.newborn2; parent1 = $f.parent1; parent2 = $f.parent2; x = $f.x; x$1 = $f.x$1; x$2 = $f.x$2; x$3 = $f.x$3; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		var $ptr, _i, _i$1, _q, _q$1, _r, _r$1, _r$2, _r$3, _r$4, _ref, _ref$1, _tuple, avg_fitness, citizen, citizen$1, h, i, index, index$1, livingTotal, mutationCount, mutationRatio, newSpots, new_population, newborn1, newborn2, parent1, parent2, x, x$1, x$2, x$3, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _i = $f._i; _i$1 = $f._i$1; _q = $f._q; _q$1 = $f._q$1; _r = $f._r; _r$1 = $f._r$1; _r$2 = $f._r$2; _r$3 = $f._r$3; _r$4 = $f._r$4; _ref = $f._ref; _ref$1 = $f._ref$1; _tuple = $f._tuple; avg_fitness = $f.avg_fitness; citizen = $f.citizen; citizen$1 = $f.citizen$1; h = $f.h; i = $f.i; index = $f.index; index$1 = $f.index$1; livingTotal = $f.livingTotal; mutationCount = $f.mutationCount; mutationRatio = $f.mutationRatio; newSpots = $f.newSpots; new_population = $f.new_population; newborn1 = $f.newborn1; newborn2 = $f.newborn2; parent1 = $f.parent1; parent2 = $f.parent2; x = $f.x; x$1 = $f.x$1; x$2 = $f.x$2; x$3 = $f.x$3; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
 		h = this;
 		new_population = $makeSlice(sliceType, 0, h.population.$length);
 		avg_fitness = 0;
@@ -3179,7 +3179,6 @@ $packages["."] = (function() {
 			if (!(_i < _ref.$length)) { break; }
 			index = _i;
 			citizen = $clone(((_i < 0 || _i >= _ref.$length) ? $throwRuntimeError("index out of range") : _ref.$array[_ref.$offset + _i]), HWCitizen);
-			Debug(new sliceType$2([new $String("new fitness of"), new HWChromosome(citizen.value), new $Int(citizen.fitness)]));
 			avg_fitness = avg_fitness + (citizen.fitness) >> 0;
 			HWCitizen.copy((x = h.population, ((index < 0 || index >= x.$length) ? $throwRuntimeError("index out of range") : x.$array[x.$offset + index])), citizen);
 			_i++;
@@ -3204,10 +3203,11 @@ $packages["."] = (function() {
 		}
 		livingTotal = new_population.$length;
 		newSpots = h.population.$length - livingTotal >> 0;
-		Debug(new sliceType$2([new $String("New Spots"), new $Int(newSpots), new $Int(livingTotal)]));
+		Debug(new sliceType$2([new $String("New Spots"), new $Int(newSpots), new $Int(livingTotal), new $Int((newSpots + livingTotal >> 0))]));
 		i = 0;
+		mutationCount = 0;
 		/* while (true) { */ case 2:
-			/* if (!(i < newSpots)) { break; } */ if(!(i < newSpots)) { $s = 3; continue; }
+			/* if (!(i < (newSpots - 1 >> 0))) { break; } */ if(!(i < (newSpots - 1 >> 0))) { $s = 3; continue; }
 			newborn1 = [newborn1];
 			newborn2 = [newborn2];
 			parent1 = $clone((x$2 = (_r = i % livingTotal, _r === _r ? _r : $throwRuntimeError("integer divide by zero")), ((x$2 < 0 || x$2 >= new_population.$length) ? $throwRuntimeError("index out of range") : new_population.$array[new_population.$offset + x$2])), HWCitizen);
@@ -3220,26 +3220,28 @@ $packages["."] = (function() {
 			/* */ if (_r$3 === 0) { $s = 5; continue; }
 			/* */ $s = 6; continue;
 			/* if (_r$3 === 0) { */ case 5:
-				Debug(new sliceType$2([new $String("Mutate 1")]));
 				$r = h.Mutate(newborn1[0]); /* */ $s = 8; case 8: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+				mutationCount = mutationCount + (1) >> 0;
 			/* } */ case 6:
 			_r$4 = rand.Intn(5); /* */ $s = 11; case 11: if($c) { $c = false; _r$4 = _r$4.$blk(); } if (_r$4 && _r$4.$blk !== undefined) { break s; }
 			/* */ if (_r$4 === 0) { $s = 9; continue; }
 			/* */ $s = 10; continue;
 			/* if (_r$4 === 0) { */ case 9:
-				Debug(new sliceType$2([new $String("Mutate 2")]));
 				$r = h.Mutate(newborn2[0]); /* */ $s = 12; case 12: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+				mutationCount = mutationCount + (1) >> 0;
 			/* } */ case 10:
 			h.HWFitness(newborn1[0]);
 			h.HWFitness(newborn2[0]);
 			new_population = $append(new_population, newborn1[0], newborn2[0]);
 			i = i + (2) >> 0;
 		/* } */ $s = 2; continue; case 3:
-		if ((i + 1 >> 0) < newSpots) {
+		mutationRatio = mutationCount / newSpots;
+		Debug(new sliceType$2([new $String("Mutations:"), new $Int(mutationCount), new $String("/"), new $Int(newSpots), new $String("="), new $Float64((mutationRatio * 1000 >> 0) * 0.1), new $String("%")]));
+		if (i < newSpots) {
 			new_population = $append(new_population, (0 >= new_population.$length ? $throwRuntimeError("index out of range") : new_population.$array[new_population.$offset + 0]));
 		}
 		h.population = new_population;
-		/* */ $s = -1; case -1: } return; } if ($f === undefined) { $f = { $blk: HelloWorldGA.ptr.prototype.mate }; } $f.$ptr = $ptr; $f._i = _i; $f._i$1 = _i$1; $f._q = _q; $f._q$1 = _q$1; $f._r = _r; $f._r$1 = _r$1; $f._r$2 = _r$2; $f._r$3 = _r$3; $f._r$4 = _r$4; $f._ref = _ref; $f._ref$1 = _ref$1; $f._tuple = _tuple; $f.avg_fitness = avg_fitness; $f.citizen = citizen; $f.citizen$1 = citizen$1; $f.h = h; $f.i = i; $f.index = index; $f.index$1 = index$1; $f.livingTotal = livingTotal; $f.newSpots = newSpots; $f.new_population = new_population; $f.newborn1 = newborn1; $f.newborn2 = newborn2; $f.parent1 = parent1; $f.parent2 = parent2; $f.x = x; $f.x$1 = x$1; $f.x$2 = x$2; $f.x$3 = x$3; $f.$s = $s; $f.$r = $r; return $f;
+		/* */ $s = -1; case -1: } return; } if ($f === undefined) { $f = { $blk: HelloWorldGA.ptr.prototype.mate }; } $f.$ptr = $ptr; $f._i = _i; $f._i$1 = _i$1; $f._q = _q; $f._q$1 = _q$1; $f._r = _r; $f._r$1 = _r$1; $f._r$2 = _r$2; $f._r$3 = _r$3; $f._r$4 = _r$4; $f._ref = _ref; $f._ref$1 = _ref$1; $f._tuple = _tuple; $f.avg_fitness = avg_fitness; $f.citizen = citizen; $f.citizen$1 = citizen$1; $f.h = h; $f.i = i; $f.index = index; $f.index$1 = index$1; $f.livingTotal = livingTotal; $f.mutationCount = mutationCount; $f.mutationRatio = mutationRatio; $f.newSpots = newSpots; $f.new_population = new_population; $f.newborn1 = newborn1; $f.newborn2 = newborn2; $f.parent1 = parent1; $f.parent2 = parent2; $f.x = x; $f.x$1 = x$1; $f.x$2 = x$2; $f.x$3 = x$3; $f.$s = $s; $f.$r = $r; return $f;
 	};
 	HelloWorldGA.prototype.mate = function() { return this.$val.mate(); };
 	HelloWorldGA.ptr.prototype.Evolve = function() {
@@ -3252,7 +3254,7 @@ $packages["."] = (function() {
 	HelloWorldGA.prototype.Evolve = function() { return this.$val.Evolve(); };
 	Debug = function(args) {
 		var $ptr, args, obj;
-		(obj = $global.console, obj.log.apply(obj, $externalize(args, sliceType$2)));
+		(obj = $global.document.driver, obj.visualLog.apply(obj, $externalize(args, sliceType$2)));
 	};
 	$pkg.Debug = Debug;
 	main = function() {
@@ -3329,9 +3331,10 @@ $packages["."] = (function() {
 			while (true) {
 				if (!(_i < _ref.$length)) { break; }
 				citizen = $clone(((_i < 0 || _i >= _ref.$length) ? $throwRuntimeError("index out of range") : _ref.$array[_ref.$offset + _i]), HWCitizen);
-				console[0].log($externalize("Chromosome:", $String), $externalize(citizen.value, HWChromosome), citizen.fitness);
+				Debug(new sliceType$2([new $String("Chromosome:"), new HWChromosome(citizen.value), new $Int(citizen.fitness)]));
 				_i++;
 			}
+			driver[0].updateVisualLog();
 			/* */ $s = -1; case -1: } return; } if ($f === undefined) { $f = { $blk: $b }; } $f.$ptr = $ptr; $f._arg = _arg; $f._arg$1 = _arg$1; $f._arg$2 = _arg$2; $f._arg$3 = _arg$3; $f._arg$4 = _arg$4; $f._i = _i; $f._r$1 = _r$1; $f._r$2 = _r$2; $f._r$3 = _r$3; $f._r$4 = _r$4; $f._r$5 = _r$5; $f._ref = _ref; $f.citizen = citizen; $f.population = population; $f.$s = $s; $f.$r = $r; return $f;
 		}; })(addEntity1, addEntity2, addEntity3, console, driver, helloWorldGA, iteration), funcType));
 		/* */ $s = -1; case -1: } return; } if ($f === undefined) { $f = { $blk: main }; } $f.$ptr = $ptr; $f._r = _r; $f.addEntity1 = addEntity1; $f.addEntity2 = addEntity2; $f.addEntity3 = addEntity3; $f.console = console; $f.document = document; $f.driver = driver; $f.helloWorldGA = helloWorldGA; $f.hwgoal = hwgoal; $f.i = i; $f.iteration = iteration; $f.j = j; $f.populationSize = populationSize; $f.str = str; $f.testChromosomes = testChromosomes; $f.$s = $s; $f.$r = $r; return $f;
