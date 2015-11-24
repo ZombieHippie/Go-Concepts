@@ -90,18 +90,26 @@ func (h *HelloWorldGA) killUnfit(maxfitness int) {
 	// find index at which below maxfitness starts
 	var index int
 	var citizen HWCitizen
+	half := len(h.population) / 2
 	for index, citizen = range h.population {
-		if citizen.fitness > maxfitness {
+		if citizen.fitness > maxfitness || index == half {
 			break
 		}
 	}
 	h.population = h.population[:index]
+}
+func (h *HelloWorldGA) killCount(deaths int) {
+	// sort by fitness, so the first members live
+	sort.Sort(ByFitness(h.population))
+	lifeIndex := len(h.population) - deaths
+	h.population = h.population[:lifeIndex]
 }
 
 func (h *HelloWorldGA) mate(births int) {
 	i := 0
 	mutationCount := 0
 	livingTotal := len(h.population)
+	Debug("test", births, livingTotal)
 	for ; i < births-1; i += 2 {
 		parent1 := h.population[i%livingTotal]
 		parent2 := h.population[(i+1)%livingTotal]
@@ -135,18 +143,13 @@ func (h *HelloWorldGA) Evolve() {
 
 	populationSize := len(h.population)
 
-	var death_threshold int
-	if avg_fitness < median_fitness {
-		death_threshold = avg_fitness
-	} else {
-		death_threshold = median_fitness
-	}
 	// kill citizens with below threshold fitness
-	h.killUnfit(death_threshold)
+	// or bottom half; at least half the population should die.
+	h.killUnfit(avg_fitness)
 
 	// fill the rest of the population with crossovers
 	livingTotal := len(h.population)
 	newSpots := populationSize - livingTotal
-	Debug("Parents, Born, Total:", newSpots, livingTotal, newSpots+livingTotal)
+	Debug("Parents, Born, Total:", livingTotal, newSpots, newSpots+livingTotal)
 	h.mate(newSpots)
 }

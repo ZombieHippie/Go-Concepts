@@ -168,8 +168,26 @@ Driver.prototype.update = function () {
 Driver.prototype.visualLog = function() {
   this.log.push(Array.prototype.slice.call(arguments).join(" "))
 };
+Driver.prototype.visualLogHighlight = function() {
+  this.log.push("~" + Array.prototype.slice.call(arguments).join(" ") + "~")
+};
 Driver.prototype.updateVisualLog = function() {
-  visuallog.innerText = this.log.join('\n')
+  visuallog.innerHTML = ""
+  var el
+  var highlightRE = /^\~(.*)\~$/
+  var cont = document.createElement("pre")
+  this.log.forEach(function (str) {
+    el = document.createElement("div")
+    var match = highlightRE.exec(str)
+    if (match != null) {
+      el.innerText = match[1]
+      el.style.backgroundColor = "yellow"
+    } else {
+      el.innerText = str
+    }
+    cont.appendChild(el)
+  })
+  visuallog.appendChild(cont)
   this.log = []
 };
 
