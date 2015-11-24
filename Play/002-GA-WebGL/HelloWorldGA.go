@@ -65,38 +65,48 @@ func (h *HelloWorldGA) GetPopulation() []HWCitizen {
 	return h.population
 }
 
-func (h *HelloWorldGA) mate() {
-	new_population := make([]HWCitizen, 0, len(h.population))
-	avg_fitness := 0
-	for index, citizen := range h.population {
+func (h HelloWorldGA) calcMedianFitness() (median_fitness int) {
+	medianIndex := len(h.population)/2 - 1
+	median_fitness = h.population[medianIndex].fitness
+	// if even, then average two centers
+	if len(h.population)%2 == 0 {
+		median_fitness += h.population[medianIndex-1].fitness
+		median_fitness /= 2
+	}
+	return
+}
+func (h HelloWorldGA) calcAvgFitness() (avg_fitness int) {
+	for _, citizen := range h.population {
 		avg_fitness += citizen.fitness
-		h.population[index] = citizen
 	}
 	avg_fitness /= len(h.population)
+	return
+}
+
+func (h *HelloWorldGA) killUnfit(maxfitness int) {
 	// sort by fitness, so the first members are first to crossover
 	sort.Sort(ByFitness(h.population))
 	// kill all who don't have above average fitness
-	for index, citizen := range h.population {
-		if citizen.fitness <= avg_fitness {
-			new_population = append(new_population, citizen)
-			if index > len(h.population)/2 {
-				break
-			}
-		} else {
+	// find index at which below maxfitness starts
+	var index int
+	var citizen HWCitizen
+	for index, citizen = range h.population {
+		if citizen.fitness > maxfitness {
 			break
 		}
 	}
-	// fill the rest of the new_population with crossovers
-	livingTotal := len(new_population)
-	newSpots := len(h.population) - livingTotal
-	Debug("New Spots", newSpots, livingTotal, newSpots+livingTotal)
+	h.population = h.population[:index]
+}
+
+func (h *HelloWorldGA) mate(births int) {
 	i := 0
 	mutationCount := 0
-	for ; i < newSpots-1; i += 2 {
-		parent1 := new_population[i%livingTotal]
-		parent2 := new_population[(i+1)%livingTotal]
+	livingTotal := len(h.population)
+	for ; i < births-1; i += 2 {
+		parent1 := h.population[i%livingTotal]
+		parent2 := h.population[(i+1)%livingTotal]
 		newborn1, newborn2 := h.Crossover(parent1, parent2)
-		// 1 in 5 mutate
+		// 1 in 5 births mutate
 		if rand.Intn(5) == 0 {
 			h.Mutate(&newborn1)
 			mutationCount += 1
@@ -107,15 +117,36 @@ func (h *HelloWorldGA) mate() {
 		}
 		h.HWFitness(&newborn1)
 		h.HWFitness(&newborn2)
-		new_population = append(new_population, newborn1, newborn2)
+		h.population = append(h.population, newborn1, newborn2)
 	}
-	mutationRatio := float64(mutationCount) / float64(newSpots)
-	Debug("Mutations:", mutationCount, "/", newSpots, "=", float64(int(mutationRatio*1e3))*1e-1, "%")
-	if i < newSpots {
-		new_population = append(new_population, new_population[0])
+	mutationRatio := float32(mutationCount) / float32(births)
+	Debug("Mutations:", mutationCount, "/", births, "=", float32(int(mutationRatio*1e3))*1e-1, "%")
+	// if not all spots have been filled, clone the most fit to the end
+	if i < births {
+		h.population = append(h.population, h.population[0])
 	}
-	h.population = new_population
 }
 func (h *HelloWorldGA) Evolve() {
-	h.mate()
+	// use average fitness and median fitness to kill off
+	avg_fitness := h.calcAvgFitness()
+	median_fitness := h.calcMedianFitness()
+	Debug("Average fitness:", avg_fitness)
+	Debug("Median fitness:", median_fitness)
+
+	populationSize := len(h.population)
+
+	var death_threshold int
+	if avg_fitness < median_fitness {
+		death_threshold = avg_fitness
+	} else {
+		death_threshold = median_fitness
+	}
+	// kill citizens with below threshold fitness
+	h.killUnfit(death_threshold)
+
+	// fill the rest of the population with crossovers
+	livingTotal := len(h.population)
+	newSpots := populationSize - livingTotal
+	Debug("Parents, Born, Total:", newSpots, livingTotal, newSpots+livingTotal)
+	h.mate(newSpots)
 }

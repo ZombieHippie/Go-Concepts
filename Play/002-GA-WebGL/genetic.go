@@ -47,6 +47,7 @@ func main() {
 
 		// Hello World! example
 		console.Call("log", "Iteration:", iteration)
+		Debug("Iteration:", iteration)
 		helloWorldGA.Evolve()
 		population := helloWorldGA.GetPopulation()
 		for _, citizen := range population {
