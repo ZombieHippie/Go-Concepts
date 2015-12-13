@@ -43,9 +43,10 @@ func TestInsertionSortReverseSorted(t *testing.T) {
 	for i := 0; i < testListLength; i++ {
 		testList[i] = int64(testListLength - i)
 	}
-	t.Log(testList)
 	lastIndice := testListLength - 1
-	InsertionSort(testList, 0, lastIndice)
+	firstIndice := 0
+	t.Log(testList, firstIndice, lastIndice)
+	InsertionSort(testList, firstIndice, lastIndice)
 	for i := 1; i < testListLength; i++ {
 		if testList[i-1] > testList[i] {
 			t.Log(testList)

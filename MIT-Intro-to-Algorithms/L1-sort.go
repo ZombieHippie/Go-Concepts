@@ -25,9 +25,9 @@ Insertion-Sort(A, n)
 // n, is the last indice to be sorted of the array
 func InsertionSort(A Interface, a, b int) {
 	for j := a + 1; j <= b; j++ {
-		i := j - 1
-		for i >= a && A.Less(j, i) {
-			A.Swap(i+1, i)
+		i := j
+		for i > a && A.Less(i, i-1) {
+			A.Swap(i-1, i)
 			i--
 		}
 	}
