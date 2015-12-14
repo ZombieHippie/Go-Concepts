@@ -23,9 +23,7 @@ func randomFn(i, j int) float64 {
 	return math.Floor(rand.NormFloat64() * 1e2)
 }
 
-func TestStrassenMultiply(t *testing.T) {
-	size := 2
-
+func testStrassenMultiply(t *testing.T, size int) {
 	A := createDense(size, randomFn)
 	B := createDense(size, randomFn)
 	t.Log("A", A)
@@ -42,10 +40,13 @@ func TestStrassenMultiply(t *testing.T) {
 		t.FailNow()
 	}
 }
-
-func TestSquareMatrixMultiply(t *testing.T) {
-	size := 2
-
+func TestStrassenMultiply2(t *testing.T) {
+	testStrassenMultiply(t, 2)
+}
+func TestStrassenMultiply1(t *testing.T) {
+	testStrassenMultiply(t, 1)
+}
+func TestSquareMatrixMultiply(t *testing.T, size int) {
 	A := createDense(size, randomFn)
 	B := createDense(size, randomFn)
 	t.Log("A", A)
@@ -61,4 +62,13 @@ func TestSquareMatrixMultiply(t *testing.T) {
 		t.Fatal("Results were not equivalent")
 		t.FailNow()
 	}
+}
+func TestSquareMatrixMultiply2(t *testing.T) {
+	testSquareMatrixMultiply(t, 2)
+}
+func TestSquareMatrixMultiply1(t *testing.T) {
+	testSquareMatrixMultiply(t, 1)
+}
+func TestSquareMatrixMultiply0(t *testing.T) {
+	testSquareMatrixMultiply(t, 0)
 }
