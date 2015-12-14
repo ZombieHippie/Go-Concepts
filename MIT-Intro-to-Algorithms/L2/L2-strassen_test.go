@@ -5,15 +5,21 @@ import (
 	"github.com/gonum/matrix/mat64"
 	"math"
 	"math/rand"
+	"os"
 	"testing"
+	"time"
 )
 
+func TestMain(m *testing.M) {
+	rand.Seed(time.Now().UnixNano())
+	os.Exit(m.Run())
+}
 func createDense(size int, fn func(int, int) float64) mat64.Matrix {
 	rows := int(math.Pow(2.0, float64(size)))
 	// Generate a 8×8 matrix of random values.
 	data := make([]float64, rows*rows)
 	for i := range data {
-		data[i] = fn(i%size, int(i-i%size)/size)
+		data[i] = fn(i%rows, int(i-i%rows)/rows)
 	}
 	a := mat64.NewDense(rows, rows, data)
 	return a
@@ -46,7 +52,7 @@ func TestStrassenMultiply2(t *testing.T) {
 func TestStrassenMultiply1(t *testing.T) {
 	testStrassenMultiply(t, 1)
 }
-func TestSquareMatrixMultiply(t *testing.T, size int) {
+func testSquareMatrixMultiply(t *testing.T, size int) {
 	A := createDense(size, randomFn)
 	B := createDense(size, randomFn)
 	t.Log("A", A)
