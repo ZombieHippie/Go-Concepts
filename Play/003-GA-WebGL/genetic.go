@@ -31,7 +31,7 @@ func main() {
 	iteration := 0
 	hwgoal := HWChromosome("Hello, world!")
 
-	populationSize := 64
+	populationSize := 256
 	testChromosomes := make([]HWChromosome, 0, populationSize)
 	for i := 0; i < populationSize; i++ {
 		str := make([]byte, len(hwgoal))

@@ -3053,7 +3053,7 @@ $packages["github.com/ZombieHippie/Go-Concepts/Play/003-GA-WebGL"] = (function()
 		}; })(addEntity1, addEntity2, addEntity3, console, driver, helloWorldGA, iteration, running);
 		iteration[0] = 0;
 		hwgoal = "Hello, world!";
-		populationSize = 64;
+		populationSize = 256;
 		testChromosomes = $makeSlice(sliceType$4, 0, populationSize);
 		i = 0;
 		/* while (true) { */ case 2:
