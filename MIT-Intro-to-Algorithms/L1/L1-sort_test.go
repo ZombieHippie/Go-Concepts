@@ -1,6 +1,7 @@
-package GoAlgorithmsMIT
+package L1_test
 
 import (
+	. "github.com/ZombieHippie/Go-Concepts/MIT-Intro-to-Algorithms/L1"
 	"math/rand"
 	"testing"
 	"time"

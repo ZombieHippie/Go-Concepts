@@ -1,4 +1,4 @@
-package GoAlgorithmsMIT
+package L1
 
 // Interface borrowed from sort package
 type Interface interface {
