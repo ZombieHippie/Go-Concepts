@@ -14,6 +14,7 @@ func TestMain(m *testing.M) {
 	rand.Seed(time.Now().UnixNano())
 	os.Exit(m.Run())
 }
+
 func createDense(size int, fn func(int, int) float64) mat64.Matrix {
 	rows := int(math.Pow(2.0, float64(size)))
 	// Generate a 8×8 matrix of random values.
@@ -45,6 +46,17 @@ func testStrassenMultiply(t *testing.T, size int) {
 		t.Fatal("Results were not equivalent")
 		t.FailNow()
 	}
+}
+func TestApplyToDense(t *testing.T) {
+	test := mat64.NewDense(5, 5, nil)
+	applying := createDense(1, randomFn).T()
+	t.Log("applying", applying)
+
+	L2.ApplyToDense(applying, test, 1, 2, 1, 2)
+
+	t.Log("Applied result", test)
+
+	t.FailNow()
 }
 func TestStrassenMultiply2(t *testing.T) {
 	testStrassenMultiply(t, 2)

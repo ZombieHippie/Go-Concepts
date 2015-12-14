@@ -51,7 +51,7 @@ func partition(M mat64.Matrix, r0, r1, c0, c1 int) *mat64.Dense {
 	return dense
 }
 
-func applyToDense(M mat64.Matrix, d *mat64.Dense, r0, r1, c0, c1 int) {
+func ApplyToDense(M mat64.Matrix, d *mat64.Dense, r0, r1, c0, c1 int) {
 	r := r1 - r0 + 1
 	c := c1 - c0 + 1
 
@@ -93,10 +93,10 @@ func squareMatrixMultiplyR1(A, B mat64.Matrix) mat64.Matrix {
 			squareMatrixMultiplyR1(A22, B21))
 		C22.Add(squareMatrixMultiplyR1(A21, B12),
 			squareMatrixMultiplyR1(A22, B22))
-		applyToDense(C11, C, w, x, w, x)
-		applyToDense(C12, C, w, x, y, z)
-		applyToDense(C21, C, y, z, w, x)
-		applyToDense(C22, C, y, z, y, z)
+		ApplyToDense(C11, C, w, x, w, x)
+		ApplyToDense(C12, C, w, x, y, z)
+		ApplyToDense(C21, C, y, z, w, x)
+		ApplyToDense(C22, C, y, z, y, z)
 	}
 	return C.T()
 }
