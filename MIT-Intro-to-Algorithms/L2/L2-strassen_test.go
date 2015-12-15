@@ -48,16 +48,31 @@ func testStrassenMultiply(t *testing.T, size int) {
 	}
 }
 func TestApplyToDense(t *testing.T) {
-	test := mat64.NewDense(5, 5, nil)
-	applying := createDense(1, randomFn).T()
+	test := mat64.NewDense(4, 4, nil)
+	applying := createDense(2, randomFn)
 	t.Log("applying", applying)
 
-	L2.ApplyToDense(applying, test, 1, 2, 1, 2)
+	L2.ApplyToDense(applying, test, 2, 3, 2, 3)
 
 	t.Log("Applied result", test)
-
-	t.FailNow()
 }
+func TestPartition(t *testing.T) {
+	parting := createDense(2, randomFn)
+	t.Logf("parting:\n %v", parting)
+	n := 4
+	w, x, y, z := 0, n/2-1, n/2, n-1
+
+	// partition 12
+	dense := L2.Partition(parting, w, x, y, z)
+
+	t.Logf("Partition(parting, %d, %d, %d, %d):\n %v", w, x, y, z, dense)
+	for i := 0; i < y; i++ {
+		for j := 0; j < y; j++ {
+			t.Logf("Parted result At(%d,%d): %f", i, j, dense.At(i, j))
+		}
+	}
+}
+
 func TestStrassenMultiply2(t *testing.T) {
 	testStrassenMultiply(t, 2)
 }

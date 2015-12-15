@@ -8,7 +8,7 @@ func GonumMultiply(A, B mat64.Matrix) mat64.Matrix {
 	rows, _ := A.Dims()
 	dense := mat64.NewDense(rows, rows, nil)
 	dense.Mul(A, B)
-	return dense.T()
+	return mat64.Matrix(dense)
 }
 
 // A and B, are the matrices
@@ -16,7 +16,7 @@ func StrassenMultiply(A, B mat64.Matrix) mat64.Matrix {
 	rows, _ := A.Dims()
 	dense := mat64.NewDense(rows, rows, nil)
 	dense.Mul(A, B)
-	return dense.T()
+	return mat64.Matrix(dense)
 }
 
 // M, is the matrix
@@ -27,7 +27,7 @@ func SquareMatrixMultiplyRecursive(A, B mat64.Matrix) mat64.Matrix {
 	// up to this point we are set up to not be a square, but if we are not a square, we will break.
 	//squareMatrixMultiplyR2(A, B, 0, aRows, 0, aCols, 0, bRows, 0, bCols, C)
 	result := squareMatrixMultiplyR1(A, B)
-	return result.T()
+	return mat64.Matrix(result)
 
 }
 
@@ -35,15 +35,15 @@ func at(M mat64.Matrix, r0, r, c0, c int) float64 {
 	return M.At(r0+r, c0+c)
 }
 
-func partition(M mat64.Matrix, r0, r1, c0, c1 int) *mat64.Dense {
+func Partition(M mat64.Matrix, r0, r1, c0, c1 int) *mat64.Dense {
 	r := r1 - r0 + 1
 	c := c1 - c0 + 1
 	dense := mat64.NewDense(r, c, nil)
 
 	// loop through, copying values to dense
-	for i := r - 1; i >= 0; i-- {
-		for j := c - 1; j >= 0; j-- {
-			v := at(M, r0, i, c0, j)
+	for i := 0; i < r; i++ {
+		for j := 0; j < c; j++ {
+			v := M.At(r0+i, c0+j) //at(M, r0, i, c0, j)
 			dense.Set(i, j, v)
 		}
 	}
@@ -52,14 +52,13 @@ func partition(M mat64.Matrix, r0, r1, c0, c1 int) *mat64.Dense {
 }
 
 func ApplyToDense(M mat64.Matrix, d *mat64.Dense, r0, r1, c0, c1 int) {
-	r := r1 - r0 + 1
-	c := c1 - c0 + 1
+	r := r1 - r0 + 1 // r0 = 2, r1 = 3, r = 2
+	c := c1 - c0 + 1 // c0 = 2, c1 = 3, c = 2
 
 	// loop through, copying values to dense
-	for i := r - 1; i >= 0; i-- {
-		for j := c - 1; j >= 0; j-- {
-			v := M.At(i, j)
-			d.Set(r0+i, c0+j, v)
+	for i := 0; i < r; i++ {
+		for j := 0; j < c; j++ {
+			d.Set(i+r0, j+c0, M.At(i, j))
 		}
 	}
 }
@@ -73,14 +72,14 @@ func squareMatrixMultiplyR1(A, B mat64.Matrix) mat64.Matrix {
 		C.Set(0, 0, av*bv) // C11 = A11 * B11
 	} else {
 		w, x, y, z := 0, n/2-1, n/2, n-1
-		B11 := partition(B, w, x, w, x)
-		B12 := partition(B, w, x, y, z)
-		B21 := partition(B, y, z, w, x)
-		B22 := partition(B, y, z, y, z)
-		A11 := partition(A, w, x, w, x)
-		A12 := partition(A, w, x, y, z)
-		A21 := partition(A, y, z, w, x)
-		A22 := partition(A, y, z, y, z)
+		B11 := Partition(B, w, x, w, x)
+		B12 := Partition(B, w, x, y, z)
+		B21 := Partition(B, y, z, w, x)
+		B22 := Partition(B, y, z, y, z)
+		A11 := Partition(A, w, x, w, x)
+		A12 := Partition(A, w, x, y, z)
+		A21 := Partition(A, y, z, w, x)
+		A22 := Partition(A, y, z, y, z)
 		C11 := mat64.NewDense(n/2, n/2, nil)
 		C12 := mat64.NewDense(n/2, n/2, nil)
 		C21 := mat64.NewDense(n/2, n/2, nil)
@@ -98,7 +97,7 @@ func squareMatrixMultiplyR1(A, B mat64.Matrix) mat64.Matrix {
 		ApplyToDense(C21, C, y, z, w, x)
 		ApplyToDense(C22, C, y, z, y, z)
 	}
-	return C.T()
+	return mat64.Matrix(C)
 }
 
 func squareMatrixMultiplyR2(A, B mat64.Matrix,
