@@ -4,6 +4,8 @@ available [gh-page](http://zombiehippie.github.io/Go-Concepts/Play/003-GA-WebGL/
 
 On behalf of our good friend [Luke Anderson](github.com/0la0), we have implemented this version of the Hello World genetic algorithm to use probabilistic distribution map to determine the best parents, where a parent is more likely to be picked for reproduction if they have lower cost. Although this seems to take longer than the other method of killing and filling we had in 002, it is much better equipped to prevent getting stuck at local optima.  
 
+We are using gopherjs to compile [HelloWorldGA.go](./HelloWorldGA.go) and [genetic.go](./genetic.go) to `genetic.go.js`.
+
 from 002-GA-WebGL:
 
 Here, we have continued our progress from 001-GA-WebGL to do more in the way of genetic algorithms and moving towards machine learning (ML).
