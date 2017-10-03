@@ -1,6 +1,6 @@
 # 002-GA-WebGL
 
-available [gh-page](http://zombiehippie.github.io/Go-Concepts/Play/002-GA-WebGL/)
+available [gh-page](http://colelawrence.github.io/Go-Concepts/Play/002-GA-WebGL/)
 
 Here, we have continued our progress from 001-GA-WebGL to do more in the way of genetic algorithms and moving towards machine learning (ML).
 
