@@ -1,6 +1,6 @@
 # 002-GA-WebGL
 
-available [gh-page](http://zombiehippie.github.io/Go-Concepts/Play/003-GA-WebGL/)
+available [gh-page](http://colelawrence.github.io/Go-Concepts/Play/003-GA-WebGL/)
 
 On behalf of our good friend [Luke Anderson](github.com/0la0), we have implemented this version of the Hello World genetic algorithm to use probabilistic distribution map to determine the best parents, where a parent is more likely to be picked for reproduction if they have lower cost. Although this seems to take longer than the other method of killing and filling we had in 002, it is much better equipped to prevent getting stuck at local optima.  
 
