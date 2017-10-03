@@ -1,6 +1,6 @@
 # 001-GA-WebGL
 
-available [gh-page](http://zombiehippie.github.io/Go-Concepts/Play/001-GA-WebGL/)
+available [gh-page](http://colelawrence.github.io/Go-Concepts/Play/001-GA-WebGL/)
 
 Here, we have established the very basis of how we can use Golang to interface with a 3D visuallization library.
 
